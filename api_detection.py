@@ -3,7 +3,7 @@ import openai
 import base64
 import json
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 def process_image(file_path):
     try:
@@ -22,7 +22,7 @@ def analyze_image():
                     {
                         "role": "user",
                         "content": [
-                            {"type": "text", "text": "Qui a t'il dans ce frigo ?"},
+                            {"type": "text", "text": "Qui a t'il dans ce frigo ? analyse tout les ingredients et genere la recette la plus adaptée aux aliments presents"},
                             {
                                 "type": "image_url",
                                 "image_url": "https://i.pinimg.com/originals/1d/88/94/1d889403191556416a7097b8ed44b700.jpg",
@@ -33,14 +33,9 @@ def analyze_image():
                 max_tokens=300,
             )
 
-            # Extraire le contenu de la réponse
             content = response.choices[0].message.content
 
-            # Formater le contenu en tant que tableau JSON
-            elements_du_frigo = {"elements_du_frigo": content.split(",")}
-
-            # Imprimer le tableau JSON
-            print(json.dumps(elements_du_frigo, indent=2))
+            print(content)
         except openai.error.OpenAIError as e:
             print(f"Erreur OpenAI : {e}")
 
