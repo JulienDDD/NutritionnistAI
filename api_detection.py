@@ -1,8 +1,10 @@
 import os
 import openai 
 import base64
+import json
 
-openai.api_key = ""
+openai.api_key = "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"
+
 def process_image(file_path):
     try:
         with open(file_path, 'rb') as image_file:
@@ -12,8 +14,7 @@ def process_image(file_path):
         print(f"Fichier {file_path} introuvable.")
         return None
 
-def analyze_image(image_base64):
-    if image_base64:
+def analyze_image():
         try:
             response = openai.ChatCompletion.create(
                 model="gpt-4-vision-preview",
@@ -31,12 +32,18 @@ def analyze_image(image_base64):
                 ],
                 max_tokens=300,
             )
-            print(response.choices[0].message.content)
+
+            # Extraire le contenu de la réponse
+            content = response.choices[0].message.content
+
+            # Formater le contenu en tant que tableau JSON
+            elements_du_frigo = {"elements_du_frigo": content.split(",")}
+
+            # Imprimer le tableau JSON
+            print(json.dumps(elements_du_frigo, indent=2))
         except openai.error.OpenAIError as e:
             print(f"Erreur OpenAI : {e}")
 
-
 if __name__ == "__main__":
-    image_path = "input.jpg"
-    image_base64 = process_image(image_path)
-    analyze_image(image_base64)
+ 
+    analyze_image()
